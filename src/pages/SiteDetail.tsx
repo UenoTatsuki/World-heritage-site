@@ -45,7 +45,7 @@ const SiteDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pt-14">
 
       {/* ヘッダー */}
       <header className="bg-white shadow-sm px-6 py-4 flex items-center gap-4">
