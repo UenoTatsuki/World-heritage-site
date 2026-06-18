@@ -1,73 +1,84 @@
-# React + TypeScript + Vite
+# 世界遺産マップ（World Heritage Map）
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+世界中のユネスコ世界遺産を、インタラクティブな地図とビジュアルなギャラリーから探せるWebアプリケーションです。学習およびポートフォリオ目的で、React + TypeScript を用いてゼロから開発しました。
 
-Currently, two official plugins are available:
+🔗 **デモサイト**: https://world-heritage-site-mmeoavusx-ueno-tatsuki-s-projects.vercel.app/
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+<!-- ここにトップページのスクリーンショットを貼ると効果的です -->
+ ![トップページ](./docs/screenshot-home.png)
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 概要
 
-## Expanding the ESLint configuration
+世界遺産に興味を持つ人が、地域や分類から遺産を探し、自分だけの「行きたいリスト」を作れるサービスです。地図からの探索と、写真主役のギャラリー閲覧という2つの導線を用意し、目的に応じて使い分けられる構成にしました。
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 主な機能
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- **インタラクティブ世界地図**: 各遺産の位置にピンを表示し、クリックで詳細を確認できます。地図は世界1個分に固定し、繰り返しスクロールを防いでいます。
+- **多軸フィルター**: 地域・分類（文化／自然／複合）・キーワードを組み合わせて絞り込めます。
+- **行きたいリスト**: 気になる遺産をお気に入り登録できます。ブラウザを閉じても消えないよう永続化しています。
+- **ビジュアルなトップページ**: 背景写真とアニメーションを使ったヒーローと、新着遺産のギャラリーグリッドを備えています。
+- **スクロール連動の演出**: スクロール位置に応じてヘッダーの見た目が変化し、グリッドは表示時にアニメーションします。
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+---
+
+## 技術スタック
+
+| 分類 | 使用技術 |
+|---|---|
+| フロントエンド | React, TypeScript |
+| ビルドツール | Vite |
+| スタイリング | Tailwind CSS |
+| 地図 | React Leaflet, OpenStreetMap |
+| 状態管理 | Zustand |
+| アニメーション | Framer Motion |
+| ルーティング | React Router |
+| ホスティング | Vercel |
+
+---
+
+## こだわった点・工夫
+
+- **コストを意識した技術選定**: 地図機能において、無料枠に制限のある商用APIではなく、完全無料の Leaflet + OpenStreetMap を採用しました。個人開発でも継続的に無償運用できる構成を重視しています。
+- **再利用性を意識したコンポーネント設計**: 遺産カードやデータ取得処理をコンポーネント／カスタムフックとして切り出し、複数のページで使い回せるようにしました。
+- **型安全な開発**: TypeScript の型定義により、データ構造を明確にし、開発中のミスを早期に発見できるようにしています。
+- **状態管理の分離**: フィルター条件を Zustand で一元管理し、地図・一覧・トップページなど複数の画面から同じ状態を参照できる構成にしました。
+
+---
+
+## ローカルでの起動方法
+
+```bash
+# リポジトリをクローン
+git clone https://github.com/UenoTatsuki/world-heritage-site.git
+cd world-heritage-site
+
+# 依存パッケージをインストール
+npm install
+
+# 開発サーバーを起動
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+起動後、ブラウザで `http://localhost:5173` を開いてください。
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 今後の展望
+
+- ユネスコ公式APIとの連携による、全1,199件の遺産データへの対応
+- 各遺産の写真表示の充実
+- 左サイドの多階層カテゴリー検索の実装
+- スマートフォン向けレスポンシブ対応の作り込み
+- 遺産の詳細情報（登録基準・面積など）の拡充
+
+---
+
+## 制作について
+
+本プロジェクトは、Webフロントエンド技術の学習を目的に個人開発したものです。企画・設計・実装・デプロイまでを一貫して行いました。
+
+> ※ 現在も継続的に機能追加・改善を進めています。
