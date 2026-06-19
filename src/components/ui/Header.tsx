@@ -26,6 +26,7 @@ const Header = () => {
 
   const tabs = [
     { path: '/', label: 'Home' },
+    { path: '/list', label: 'List' },
     { path: '/map', label: 'Map' },
     { path: '/wishlist', label: 'Wishlist' },
   ]

@@ -26,7 +26,7 @@ const Home = () => {
       ) : loading ? (
         <p className="text-center text-gray-400 py-20">読み込み中...</p>
       ) : (
-        <HeritageGrid sites={latestSites} />
+        <HeritageGrid sites={latestSites} title="新着の世界遺産" subtitle="最近追加された遺産をピックアップ" />
       )}
     </div>
   )

@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Header from './components/ui/Header'
 import Home from './pages/Home'
 import MapPage from './pages/MapPage'
+import ListPage from './pages/ListPage'
 import SiteDetail from './pages/SiteDetail'
 import Wishlist from './pages/Wishlist'
 
@@ -16,6 +17,7 @@ const App = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/list" element={<ListPage />} />
         <Route path="/map" element={<MapPage />} />
         <Route path="/site/:id" element={<SiteDetail />} />
         <Route path="/wishlist" element={<Wishlist />} />

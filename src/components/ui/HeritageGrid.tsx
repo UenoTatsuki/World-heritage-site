@@ -10,6 +10,8 @@ import type { HeritageItem } from '../../types/heritage'
 
 interface Props {
   sites: HeritageItem[]
+  title?: string
+  subtitle?: string
 }
 
 // カテゴリー別のプレースホルダー色
@@ -29,13 +31,17 @@ const categoryLabel = (category: HeritageItem['category']) => {
   }
 }
 
-const HeritageGrid = ({ sites }: Props) => {
+const HeritageGrid = ({ sites, title, subtitle }: Props) => {
   const navigate = useNavigate()
 
   return (
-    <section className="max-w-6xl mx-auto px-6 py-20">
-      <h2 className="text-2xl font-bold text-gray-800 mb-2">新着の世界遺産</h2>
-      <p className="text-sm text-gray-400 mb-10">最近追加された遺産をピックアップ</p>
+    <section className="max-w-6xl mx-auto px-6 pb-20">
+      {title && (
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">{title}</h2>
+      )}
+      {subtitle && (
+        <p className="text-sm text-gray-400 mb-10">{subtitle}</p>
+      )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {sites.map((site, index) => (

@@ -29,5 +29,6 @@ export type Category = 'Cultural' | 'Natural' | 'Mixed'
 export interface FilterState {
   region: Region | 'All'
   category: Category | 'All'
+  decade: number | 'All'
   search: string
 }
