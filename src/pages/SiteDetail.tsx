@@ -65,7 +65,7 @@ const SiteDetail = () => {
         </span>
 
         <h2 className="text-2xl font-bold text-gray-800 mt-3">
-          {site.name}
+          {site.name_ja}
         </h2>
 
         <div className="flex gap-4 mt-2 text-sm text-gray-400">

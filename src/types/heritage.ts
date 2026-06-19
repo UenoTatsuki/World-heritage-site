@@ -6,6 +6,7 @@
 export interface HeritageItem {
   id: number
   name: string
+  name_ja: string
   description: string
   short_description: string
   latitude: number

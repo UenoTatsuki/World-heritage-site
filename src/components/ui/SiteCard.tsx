@@ -60,7 +60,7 @@ const SiteCard = ({ site, onClick }: Props) => {
 
       {/* 遺産名 */}
       <h3 className="mt-2 text-sm font-bold text-gray-800 line-clamp-2 pr-6">
-        {site.name}
+        {site.name_ja}
       </h3>
 
       {/* 国名・登録年 */}

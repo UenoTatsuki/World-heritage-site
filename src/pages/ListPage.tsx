@@ -7,6 +7,7 @@ import { useHeritage } from '../hooks/useHeritage'
 import { useListFilterStore } from '../store/listFilterStore'
 import CategorySidebar from '../components/ui/CategorySidebar'
 import HeritageGrid from '../components/ui/HeritageGrid'
+import ActiveFilterTags from '../components/ui/ActiveFilterTags'
 
 const ListPage = () => {
   const { sites, loading, error } = useHeritage()
@@ -38,6 +39,7 @@ const ListPage = () => {
           </div>
 
           <div className="flex-1">
+            <ActiveFilterTags />
             {error ? (
               <p className="text-red-500 py-20 text-center">エラー: {error}</p>
             ) : loading ? (

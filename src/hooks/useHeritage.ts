@@ -5,6 +5,7 @@
 
 import { useState, useEffect } from 'react'
 import type { HeritageItem } from '../types/heritage'
+import { fetchWikipediaImage } from '../utils/wikipediaImage'
 
 const API_URL = '/sites.json'
 
@@ -24,6 +25,7 @@ export const useHeritage = () => {
         const mapped: HeritageItem[] = data.rows.map((item: any) => ({
           id: item.id_no,
           name: item.site,
+          name_ja: item.site_ja ?? item.site,
           description: item.justification ?? '',
           short_description: item.short_description ?? '',
           latitude: parseFloat(item.latitude),
@@ -37,7 +39,17 @@ export const useHeritage = () => {
           image_url: item.image_url ?? '',
         }))
 
-        setSites(mapped)
+        // 各遺産の画像をWikipediaから並行取得する
+        const withImages = await Promise.all(
+          mapped.map(async (site) => {
+            // すでに画像URLがあればそれを優先、なければWikipediaから取得
+            if (site.image_url) return site
+            const image = await fetchWikipediaImage(site.name)
+            return { ...site, image_url: image }
+          })
+        )
+
+        setSites(withImages)
       } catch (err) {
         setError(err instanceof Error ? err.message : '不明なエラー')
       } finally {

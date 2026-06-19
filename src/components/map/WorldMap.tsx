@@ -46,7 +46,7 @@ const WorldMap = ({ sites, onSelectSite }: Props) => {
           eventHandlers={{ click: () => onSelectSite(site) }}
         >
           <Popup>
-            <p className="font-bold text-sm">{site.name}</p>
+            <p className="font-bold text-sm">{site.name_ja}</p>
             <p className="text-xs text-gray-500">{site.country}</p>
           </Popup>
         </Marker>

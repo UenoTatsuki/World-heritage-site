@@ -73,7 +73,7 @@ const HeritageGrid = ({ sites, title, subtitle }: Props) => {
             <div className="mt-3">
               <p className="text-xs text-gray-400">{categoryLabel(site.category)}</p>
               <h3 className="text-sm font-bold text-gray-800 mt-1 line-clamp-1">
-                {site.name}
+                {site.name_ja}
               </h3>
               <p className="text-xs text-gray-400 mt-1">
                 {site.country} · {site.date_inscribed}年
