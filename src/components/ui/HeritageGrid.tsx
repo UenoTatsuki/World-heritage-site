@@ -7,20 +7,12 @@
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import type { HeritageItem } from '../../types/heritage'
+import LazyImage from './LazyImage'
 
 interface Props {
   sites: HeritageItem[]
   title?: string
   subtitle?: string
-}
-
-// カテゴリー別のプレースホルダー色
-const placeholderColor = (category: HeritageItem['category']) => {
-  switch (category) {
-    case 'Cultural': return 'bg-amber-100'
-    case 'Natural':  return 'bg-emerald-100'
-    case 'Mixed':    return 'bg-violet-100'
-  }
 }
 
 const categoryLabel = (category: HeritageItem['category']) => {
@@ -55,19 +47,7 @@ const HeritageGrid = ({ sites, title, subtitle }: Props) => {
             className="group cursor-pointer"
           >
             {/* 画像エリア（今は色プレースホルダー） */}
-            <div
-              className={`aspect-[4/3] rounded-xl overflow-hidden ${placeholderColor(site.category)} flex items-center justify-center transition-transform duration-300 group-hover:-translate-y-1`}
-            >
-              {site.image_url ? (
-                <img
-                  src={site.image_url}
-                  alt={site.name}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <span className="text-gray-400 text-sm">{site.country}</span>
-              )}
-            </div>
+            <LazyImage site={site} />
 
             {/* キャプション */}
             <div className="mt-3">
