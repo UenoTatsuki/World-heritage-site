@@ -1,11 +1,11 @@
 /**
  * CategorySidebar.tsx
  * 多階層カテゴリー検索のサイドバー（地域・分類・登録年代）
- * 大分類をクリックで開閉、小分類で絞り込む。件数はデータから自動集計する
- * 選択状態はfilterStore（Zustand）と連携する
+ * チェックボックスで複数選択できる。件数はデータから自動集計する
+ * listFilterStore（一覧ページ専用・複数選択）と連携する
  */
 import { useState } from 'react'
-import { useFilterStore } from '../../store/filterStore'
+import { useListFilterStore } from '../../store/listFilterStore'
 import type { HeritageItem, Region, Category } from '../../types/heritage'
 
 interface Props {
@@ -38,7 +38,6 @@ const CATEGORY_LABEL: Record<Category, string> = {
 const DECADES = [1970, 1980, 1990, 2000, 2010, 2020]
 
 const CategorySidebar = ({ sites }: Props) => {
-  // どの大分類が開いているか
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({
     region: true,
     category: false,
@@ -46,19 +45,38 @@ const CategorySidebar = ({ sites }: Props) => {
   })
 
   const {
-    region, category, decade,
-    setRegion, setCategory, setDecade, reset,
-  } = useFilterStore()
+    regions, categories, decades,
+    toggleRegion, toggleCategory, toggleDecade, reset,
+  } = useListFilterStore()
 
   const toggleGroup = (key: string) => {
     setOpenGroups((prev) => ({ ...prev, [key]: !prev[key] }))
   }
 
-  // 件数を数えるヘルパー
   const countByRegion = (r: Region) => sites.filter((s) => s.region === r).length
   const countByCategory = (c: Category) => sites.filter((s) => s.category === c).length
   const countByDecade = (d: number) =>
     sites.filter((s) => Math.floor(s.date_inscribed / 10) * 10 === d).length
+
+  // チェックボックス付きの行を作る共通パーツ
+  const CheckRow = ({
+    label, count, checked, onChange,
+  }: {
+    label: string; count: number; checked: boolean; onChange: () => void
+  }) => (
+    <label className="flex items-center gap-2 text-xs py-1.5 pl-5 pr-2 rounded-lg hover:bg-gray-50 cursor-pointer">
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={onChange}
+        className="accent-blue-600 w-3.5 h-3.5"
+      />
+      <span className={`flex-1 ${checked ? 'text-blue-600 font-medium' : 'text-gray-500'}`}>
+        {label}
+      </span>
+      <span className="text-gray-300">{count}</span>
+    </label>
+  )
 
   return (
     <aside className="w-full">
@@ -84,16 +102,13 @@ const CategorySidebar = ({ sites }: Props) => {
         {openGroups.region && (
           <div className="mt-1">
             {REGIONS.map((r) => (
-              <button
+              <CheckRow
                 key={r}
-                onClick={() => setRegion(region === r ? 'All' : r)}
-                className={`w-full flex items-center justify-between text-xs py-1.5 pl-5 pr-2 rounded-lg hover:bg-gray-50 ${
-                  region === r ? 'text-blue-600 font-medium' : 'text-gray-500'
-                }`}
-              >
-                <span>{REGION_LABEL[r]}</span>
-                <span className="text-gray-300">{countByRegion(r)}</span>
-              </button>
+                label={REGION_LABEL[r]}
+                count={countByRegion(r)}
+                checked={regions.includes(r)}
+                onChange={() => toggleRegion(r)}
+              />
             ))}
           </div>
         )}
@@ -111,16 +126,13 @@ const CategorySidebar = ({ sites }: Props) => {
         {openGroups.category && (
           <div className="mt-1">
             {CATEGORIES.map((c) => (
-              <button
+              <CheckRow
                 key={c}
-                onClick={() => setCategory(category === c ? 'All' : c)}
-                className={`w-full flex items-center justify-between text-xs py-1.5 pl-5 pr-2 rounded-lg hover:bg-gray-50 ${
-                  category === c ? 'text-blue-600 font-medium' : 'text-gray-500'
-                }`}
-              >
-                <span>{CATEGORY_LABEL[c]}</span>
-                <span className="text-gray-300">{countByCategory(c)}</span>
-              </button>
+                label={CATEGORY_LABEL[c]}
+                count={countByCategory(c)}
+                checked={categories.includes(c)}
+                onChange={() => toggleCategory(c)}
+              />
             ))}
           </div>
         )}
@@ -138,16 +150,13 @@ const CategorySidebar = ({ sites }: Props) => {
         {openGroups.decade && (
           <div className="mt-1">
             {DECADES.map((d) => (
-              <button
+              <CheckRow
                 key={d}
-                onClick={() => setDecade(decade === d ? 'All' : d)}
-                className={`w-full flex items-center justify-between text-xs py-1.5 pl-5 pr-2 rounded-lg hover:bg-gray-50 ${
-                  decade === d ? 'text-blue-600 font-medium' : 'text-gray-500'
-                }`}
-              >
-                <span>{d}年代</span>
-                <span className="text-gray-300">{countByDecade(d)}</span>
-              </button>
+                label={`${d}年代`}
+                count={countByDecade(d)}
+                checked={decades.includes(d)}
+                onChange={() => toggleDecade(d)}
+              />
             ))}
           </div>
         )}

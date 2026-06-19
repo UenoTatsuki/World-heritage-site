@@ -1,27 +1,27 @@
 /**
  * ListPage.tsx
  * 一覧専用ページ：左に多階層カテゴリー、右に絞り込みグリッド
- * filterStoreの条件（地域・分類・登録年代・キーワード）で絞り込む
+ * listFilterStoreの複数選択条件（地域・分類・登録年代）で絞り込む
  */
 import { useHeritage } from '../hooks/useHeritage'
-import { useFilterStore } from '../store/filterStore'
+import { useListFilterStore } from '../store/listFilterStore'
 import CategorySidebar from '../components/ui/CategorySidebar'
 import HeritageGrid from '../components/ui/HeritageGrid'
 
 const ListPage = () => {
   const { sites, loading, error } = useHeritage()
-  const { region, category, decade, search } = useFilterStore()
+  const { regions, categories, decades } = useListFilterStore()
 
-  // 絞り込み（4条件をANDで適用）
+  // 絞り込み（各カテゴリーは「配列が空 = 条件なし」、選択ありなら「どれかに一致」）
   const filtered = sites.filter((site) => {
-    const matchRegion   = region === 'All' || site.region === region
-    const matchCategory = category === 'All' || site.category === category
-    const matchDecade   = decade === 'All' ||
-      Math.floor(site.date_inscribed / 10) * 10 === decade
-    const matchSearch   = search === '' ||
-      site.name.toLowerCase().includes(search.toLowerCase()) ||
-      site.country.toLowerCase().includes(search.toLowerCase())
-    return matchRegion && matchCategory && matchDecade && matchSearch
+    const matchRegion =
+      regions.length === 0 || regions.includes(site.region as never)
+    const matchCategory =
+      categories.length === 0 || categories.includes(site.category)
+    const matchDecade =
+      decades.length === 0 ||
+      decades.includes(Math.floor(site.date_inscribed / 10) * 10)
+    return matchRegion && matchCategory && matchDecade
   })
 
   return (
@@ -31,14 +31,12 @@ const ListPage = () => {
         <p className="text-sm text-gray-400 mb-8">カテゴリーで絞り込んで探せます</p>
 
         <div className="flex gap-10">
-          {/* 左サイドバー */}
           <div className="w-52 flex-shrink-0">
             <div className="sticky top-20">
               <CategorySidebar sites={sites} />
             </div>
           </div>
 
-          {/* 右グリッド */}
           <div className="flex-1">
             {error ? (
               <p className="text-red-500 py-20 text-center">エラー: {error}</p>
