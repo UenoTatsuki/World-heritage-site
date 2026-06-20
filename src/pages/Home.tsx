@@ -6,6 +6,8 @@
 import { useHeritage } from '../hooks/useHeritage'
 import Hero from '../components/ui/Hero'
 import HeritageGrid from '../components/ui/HeritageGrid'
+import AboutSection from '../components/ui/AboutSection'
+import ProfileSection from '../components/ui/ProfileSection'
 
 const Home = () => {
   const { sites, loading, error } = useHeritage()
@@ -28,6 +30,12 @@ const Home = () => {
       ) : (
         <HeritageGrid sites={latestSites} title="新着の世界遺産" subtitle="最近追加された遺産をピックアップ" />
       )}
+
+      {/* サイト紹介 */}
+      <AboutSection />
+
+      {/* プロフィール */}
+      <ProfileSection />
     </div>
   )
 }
