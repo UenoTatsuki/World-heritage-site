@@ -17,13 +17,22 @@ const HERO_IMAGES = [
 const Hero = () => {
   const [current, setCurrent] = useState(0)
 
-  // 5秒ごとに次の画像へ
+  // ▼ ここの数値を変えると演出のタイミングを調整できます（単位：秒）
+  const MAIN_DELAY = 1      // メインコピーが出るまでの待ち時間
+  const SUB_DELAY = 2.5       // サブコピーが出るまでの待ち時間
+  const FADE_DURATION = 2.5   // 文字が浮かび上がる時間
+  const IMAGE_INTERVAL = 8    // 画像が切り替わる間隔
+  const IMAGE_START_DELAY = 3.2  // 最初の画像が浮かび始めるまでの待ち時間
+  const IMAGE_FADE = 3           // 画像が浮かび上がる時間
+  // ▲
+
+  // 画像を一定間隔で切り替える
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrent((prev) => (prev + 1) % HERO_IMAGES.length)
-    }, 5000)
+    }, IMAGE_INTERVAL * 1000)
     return () => clearInterval(timer)
-  }, [])
+  }, [IMAGE_INTERVAL])
 
   return (
     <section className="relative h-screen w-full overflow-hidden bg-black">
@@ -35,7 +44,11 @@ const Hero = () => {
           style={{ backgroundImage: `url(${src})` }}
           initial={{ opacity: 0 }}
           animate={{ opacity: index === current ? 1 : 0 }}
-          transition={{ duration: 2, ease: 'easeInOut' }}
+          transition={{
+            duration: index === current ? IMAGE_FADE : 2,
+            ease: 'easeInOut',
+            delay: index === 0 && current === 0 ? IMAGE_START_DELAY : 0,
+          }}
         />
       ))}
 
@@ -44,28 +57,20 @@ const Hero = () => {
 
       {/* コピー */}
       <div className="relative z-10 flex flex-col justify-center h-full max-w-5xl mx-auto px-8">
-        <motion.p
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.6, delay: 0.4 }}
-          className="text-white/80 text-sm tracking-[0.2em] mb-4"
-        >
-          UNESCO WORLD HERITAGE
-        </motion.p>
 
         <motion.h1
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.8, delay: 1.1 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: FADE_DURATION, delay: MAIN_DELAY }}
           className="text-white text-4xl md:text-6xl font-bold leading-tight tracking-wide"
         >
           世界の宝を、<br />地図から旅する。
         </motion.h1>
 
         <motion.p
-          initial={{ opacity: 0, y: 14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.8, delay: 1.6 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: FADE_DURATION, delay: SUB_DELAY }}
           className="text-white/80 text-base md:text-lg mt-6"
         >
           1,199件の世界遺産を地域・分類から探せるアーカイブ
@@ -76,7 +81,7 @@ const Hero = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 2.2 }}
+        transition={{ duration: 1.2, delay: 3.2 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 text-white/70 text-xs tracking-widest"
       >
         SCROLL ↓

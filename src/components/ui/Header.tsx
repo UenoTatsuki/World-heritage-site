@@ -6,10 +6,12 @@
  */
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { motion } from 'framer-motion'
 
 const Header = () => {
   const { pathname } = useLocation()
   const [scrolled, setScrolled] = useState(false)
+  const HEADER_DELAY = 3.2  // トップでヘッダーが現れるまでの待ち時間（秒）
 
   // トップページかどうか（ヒーローがあるページ）
   const isHome = pathname === '/'
@@ -32,7 +34,10 @@ const Header = () => {
   ]
 
   return (
-    <header
+    <motion.header
+      initial={{ opacity: isHome ? 0 : 1 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1.2, delay: isHome ? HEADER_DELAY : 0 }}
       className={`fixed top-0 inset-x-0 z-50 transition-colors duration-300 ${
         transparent
           ? 'bg-transparent border-b border-transparent'
@@ -74,7 +79,7 @@ const Header = () => {
           })}
         </nav>
       </div>
-    </header>
+    </motion.header>
   )
 }
 
