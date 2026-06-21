@@ -29,10 +29,10 @@ const HeritageGrid = ({ sites, title, subtitle }: Props) => {
   return (
     <section className="max-w-6xl mx-auto px-6 pb-20">
       {title && (
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">{title}</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mb-2 text-center">{title}</h2>
       )}
       {subtitle && (
-        <p className="text-sm text-gray-400 mb-10">{subtitle}</p>
+        <p className="text-sm text-gray-400 mb-10 text-center">{subtitle}</p>
       )}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -22,19 +22,19 @@ const Home = () => {
       {/* ヒーロー */}
       <Hero />
 
+      {/* サイト紹介 */}
+      <AboutSection />
+
       {/* 新着グリッド */}
       {error ? (
         <p className="text-center text-red-500 py-20">エラー: {error}</p>
       ) : loading ? (
         <p className="text-center text-gray-400 py-20">読み込み中...</p>
       ) : (
-        <div className="pt-32">
+        <div className="pt-8">
           <HeritageGrid sites={latestSites} title="新着の世界遺産" subtitle="最近追加された遺産をピックアップ" />
         </div>
       )}
-
-      {/* サイト紹介 */}
-      <AboutSection />
 
       {/* プロフィール */}
       <ProfileSection />
