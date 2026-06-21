@@ -31,9 +31,10 @@ const ListPage = () => {
         <h1 className="text-2xl font-bold text-gray-800 mb-1">世界遺産を探す</h1>
         <p className="text-sm text-gray-400 mb-8">カテゴリーで絞り込んで探せます</p>
 
-        <div className="flex gap-10">
-          <div className="w-52 flex-shrink-0">
-            <div className="sticky top-20">
+        <div className="flex flex-col md:flex-row gap-10">
+          {/* 左サイドバー */}
+          <div className="w-full md:w-52 flex-shrink-0">
+            <div className="md:sticky md:top-20">
               <CategorySidebar sites={sites} />
             </div>
           </div>

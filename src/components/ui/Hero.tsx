@@ -17,14 +17,14 @@ const HERO_IMAGES = [
 const Hero = () => {
   const [current, setCurrent] = useState(0)
 
-  // ▼ ここの数値を変えると演出のタイミングを調整できます（単位：秒）
+  // ↓ここの数値を変えると演出のタイミングを調整できる（単位：秒）
   const MAIN_DELAY = 1      // メインコピーが出るまでの待ち時間
   const SUB_DELAY = 2.5       // サブコピーが出るまでの待ち時間
   const FADE_DURATION = 2.5   // 文字が浮かび上がる時間
   const IMAGE_INTERVAL = 8    // 画像が切り替わる間隔
   const IMAGE_START_DELAY = 3.2  // 最初の画像が浮かび始めるまでの待ち時間
   const IMAGE_FADE = 3           // 画像が浮かび上がる時間
-  // ▲
+  //
 
   // 画像を一定間隔で切り替える
   useEffect(() => {
@@ -71,7 +71,7 @@ const Hero = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: FADE_DURATION, delay: SUB_DELAY }}
-          className="text-white/80 text-base md:text-lg mt-6"
+          className="text-white/80 text-xs sm:text-base md:text-lg mt-6"
         >
           1,199件の世界遺産を地域・分類から探せるアーカイブ
         </motion.p>

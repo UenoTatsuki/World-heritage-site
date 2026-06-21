@@ -21,6 +21,7 @@ const MapPage = () => {
     const matchCategory = category === 'All' || site.category === category
     const matchSearch   = search === '' ||
       site.name.toLowerCase().includes(search.toLowerCase()) ||
+      site.name_ja.includes(search) ||
       site.country.toLowerCase().includes(search.toLowerCase())
     return matchRegion && matchCategory && matchSearch
   })
@@ -41,8 +42,8 @@ const MapPage = () => {
         <FilterPanel />
       </div>
 
-      <div className="flex flex-1 gap-4 p-4 overflow-hidden">
-        <div className="flex-1 rounded-xl overflow-hidden shadow">
+      <div className="flex flex-col md:flex-row flex-1 gap-4 p-4 overflow-hidden">
+        <div className="flex-1 min-h-[300px] rounded-xl overflow-hidden shadow">
           {loading ? (
             <div className="flex items-center justify-center h-full bg-gray-100 text-gray-400">
               データ読み込み中...
@@ -52,7 +53,7 @@ const MapPage = () => {
           )}
         </div>
 
-        <div className="w-72 overflow-y-auto flex flex-col gap-3">
+        <div className="w-full md:w-72 overflow-y-auto flex flex-col gap-3">
           {loading ? (
             <p className="text-sm text-gray-400 text-center mt-8">読み込み中...</p>
           ) : filtered.length === 0 ? (

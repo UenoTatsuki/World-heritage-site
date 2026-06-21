@@ -28,14 +28,21 @@ const HeritageGrid = ({ sites, title, subtitle }: Props) => {
 
   return (
     <section className="max-w-6xl mx-auto px-6 pb-20">
-      {title && (
-        <h2 className="text-2xl font-bold text-gray-800 mb-2 text-center">{title}</h2>
-      )}
-      {subtitle && (
-        <p className="text-sm text-gray-400 mb-10 text-center">{subtitle}</p>
-      )}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, margin: '-80px' }}
+        transition={{ duration: 0.6 }}
+      >
+        {title && (
+          <h2 className="text-2xl font-bold text-gray-800 mb-2 text-center">{title}</h2>
+        )}
+        {subtitle && (
+          <p className="text-sm text-gray-400 mb-10 text-center">{subtitle}</p>
+        )}
+      </motion.div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
         {sites.map((site, index) => (
           <motion.div
             key={site.id}
