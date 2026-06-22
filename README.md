@@ -76,7 +76,7 @@ VITE_FIREBASE_AUTH_DOMAIN=...
 
 など
 
-# 開発サーバーを起動
+### 開発サーバーを起動
 npm run dev
 
 起動後、ブラウザで \`http://localhost:5173\` を開いてください。
