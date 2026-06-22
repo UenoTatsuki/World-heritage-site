@@ -10,6 +10,7 @@ import MapPage from './pages/MapPage'
 import ListPage from './pages/ListPage'
 import SiteDetail from './pages/SiteDetail'
 import Wishlist from './pages/Wishlist'
+import Login from './pages/Login'
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/map" element={<MapPage />} />
         <Route path="/site/:id" element={<SiteDetail />} />
         <Route path="/wishlist" element={<Wishlist />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   )

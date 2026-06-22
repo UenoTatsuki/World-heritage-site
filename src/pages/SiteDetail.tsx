@@ -50,7 +50,7 @@ const SiteDetail = () => {
       {/* ヘッダー */}
       <header className="bg-white shadow-sm px-6 py-4 flex items-center gap-4">
         <button
-          onClick={() => navigate('/')}
+          onClick={() => navigate(-1)}
           className="text-gray-400 hover:text-gray-600 text-sm"
         >
           ← 戻る
