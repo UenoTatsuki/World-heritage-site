@@ -61,22 +61,23 @@
 
 ## ローカルでの起動方法
 
-\`\`\`bash
-# リポジトリをクローン
+### リポジトリをクローン
 git clone https://github.com/your-name/world-heritage-site.git
+
 cd world-heritage-site
 
-# 依存パッケージをインストール
+### 依存パッケージをインストール
 npm install
 
-# 環境変数を設定（.envファイルを作成し、Firebaseの設定値を記入）
-# VITE_FIREBASE_API_KEY=...
-# VITE_FIREBASE_AUTH_DOMAIN=...
-# など
+### 環境変数を設定（.envファイルを作成し、Firebaseの設定値を記入）
+VITE_FIREBASE_API_KEY=...
+
+VITE_FIREBASE_AUTH_DOMAIN=...
+
+など
 
 # 開発サーバーを起動
 npm run dev
-\`\`\`
 
 起動後、ブラウザで \`http://localhost:5173\` を開いてください。
 
