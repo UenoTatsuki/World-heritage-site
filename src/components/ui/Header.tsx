@@ -7,9 +7,13 @@
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import { useAuth } from '../../contexts/AuthContext'
+import { signOut } from 'firebase/auth'
+import { auth } from '../../lib/firebase'
 
 const Header = () => {
   const { pathname } = useLocation()
+  const { user } = useAuth()
   const [scrolled, setScrolled] = useState(false)
   const HEADER_DELAY = 3.2  // トップでヘッダーが現れるまでの待ち時間（秒）
 
@@ -32,6 +36,10 @@ const Header = () => {
     { path: '/map', label: 'Map' },
     { path: '/wishlist', label: 'Wishlist' },
   ]
+
+  const handleLogout = async () => {
+    await signOut(auth)
+  }
 
   return (
     <motion.header
@@ -77,6 +85,25 @@ const Header = () => {
               </Link>
             )
           })}
+          {user ? (
+            <button
+              onClick={handleLogout}
+              className={`text-sm transition-colors ${
+                transparent ? 'text-white/70 hover:text-white' : 'text-gray-400 hover:text-gray-600'
+              }`}
+            >
+              Logout
+            </button>
+          ) : (
+            <Link
+              to="/login"
+              className={`text-sm transition-colors ${
+                transparent ? 'text-white/70 hover:text-white' : 'text-gray-400 hover:text-gray-600'
+              }`}
+            >
+              Login
+            </Link>
+          )}
         </nav>
       </div>
     </motion.header>

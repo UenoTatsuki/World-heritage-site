@@ -6,6 +6,8 @@
 import { motion } from 'framer-motion'
 import { useWishlist } from '../../hooks/useWishlist'
 import type { HeritageItem } from '../../types/heritage'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../../contexts/AuthContext'
 
 interface Props {
   site: HeritageItem
@@ -31,6 +33,8 @@ const categoryLabel = (category: HeritageItem['category']) => {
 const SiteCard = ({ site, onClick }: Props) => {
   const { toggleWishlist, isWishlisted } = useWishlist()
   const wishlisted = isWishlisted(site.id)
+  const { user } = useAuth()
+  const navigate = useNavigate()
 
   return (
     <motion.div
@@ -45,6 +49,10 @@ const SiteCard = ({ site, onClick }: Props) => {
       <button
         onClick={(e) => {
           e.stopPropagation()
+          if (!user) {
+            navigate('/login')
+            return
+          }
           toggleWishlist(site.id)
         }}
         className="absolute top-3 right-3 text-lg"
