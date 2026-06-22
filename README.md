@@ -2,7 +2,7 @@
 
 世界中のユネスコ世界遺産を、インタラクティブな地図とビジュアルなギャラリーから探せるWebアプリケーションです。学習およびポートフォリオ目的で、React + TypeScript を用いてゼロから開発しました。
 
-🔗 **デモサイト**: https://world-heritage-site-mmeoavusx-ueno-tatsuki-s-projects.vercel.app/
+🔗 **WebサイトURL**: https://world-heritage-site-pi.vercel.app/
 
  ![トップページ](./docs/screenshot-home.png)
 
