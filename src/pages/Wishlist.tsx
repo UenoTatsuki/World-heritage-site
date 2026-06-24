@@ -12,7 +12,7 @@ import type { HeritageItem } from '../types/heritage'
 const Wishlist = () => {
   const navigate = useNavigate()
   const { sites, loading } = useHeritage()
-  const { wishlist } = useWishlist()
+  const { wishlist, loading: wishlistLoading } = useWishlist()
 
   // お気に入り登録されている遺産だけに絞り込む
   const wishlistedSites = sites.filter((site) => wishlist.includes(site.id))
@@ -37,7 +37,7 @@ const Wishlist = () => {
 
       {/* コンテンツ */}
       <div className="max-w-4xl mx-auto p-6">
-        {loading ? (
+        {loading || wishlistLoading ? (
           <p className="text-sm text-gray-400 text-center mt-12">読み込み中...</p>
         ) : wishlistedSites.length === 0 ? (
           <div className="flex flex-col items-center justify-center mt-20 gap-3">
