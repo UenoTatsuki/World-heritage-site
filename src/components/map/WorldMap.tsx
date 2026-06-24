@@ -7,6 +7,7 @@
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet'
 import { Icon } from 'leaflet'
 import type { HeritageItem } from '../../types/heritage'
+import MarkerClusterGroup from 'react-leaflet-cluster'
 
 const pinIcon = new Icon({
   iconUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png',
@@ -38,19 +39,28 @@ const WorldMap = ({ sites, onSelectSite }: Props) => {
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
         noWrap={true}
       />
-      {sites.map((site) => (
-        <Marker
-          key={site.id}
-          position={[site.latitude, site.longitude]}
-          icon={pinIcon}
-          eventHandlers={{ click: () => onSelectSite(site) }}
-        >
-          <Popup>
-            <p className="font-bold text-sm">{site.name_ja}</p>
-            <p className="text-xs text-gray-500">{site.country}</p>
-          </Popup>
-        </Marker>
-      ))}
+      <MarkerClusterGroup chunkedLoading>
+        {sites
+          .filter((site) =>
+            isFinite(Number(site.latitude)) &&
+            isFinite(Number(site.longitude)) &&
+            String(site.latitude) !== '' &&
+            String(site.longitude) !== ''
+          )
+          .map((site) => (
+          <Marker
+            key={site.id}
+            position={[Number(site.latitude), Number(site.longitude)]}
+            icon={pinIcon}
+            eventHandlers={{ click: () => onSelectSite(site) }}
+          >
+            <Popup>
+              <p className="font-bold text-sm">{site.name_ja}</p>
+              <p className="text-xs text-gray-500">{site.country}</p>
+            </Popup>
+          </Marker>
+        ))}
+      </MarkerClusterGroup>
     </MapContainer>
   )
 }
