@@ -6,6 +6,8 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useHeritage } from '../hooks/useHeritage'
 import { parseCriteria } from '../utils/criteria'
+import { useState, useEffect } from 'react'
+import { fetchWikipediaImage } from '../utils/wikipediaImage'
 
 const categoryLabel = (category: string) => {
   switch (category) {
@@ -32,6 +34,22 @@ const SiteDetail = () => {
   const navigate = useNavigate()
   const { sites, loading } = useHeritage()
 
+  const site = sites.find((s) => s.id === Number(id))
+
+  // 画像：データになければWikipediaから取得（フックは早期returnより前に置く）
+  const [heroImage, setHeroImage] = useState('')
+
+  useEffect(() => {
+    if (!site) return
+    if (site.image_url) {
+      setHeroImage(site.image_url)
+    } else {
+      fetchWikipediaImage(site.wiki_title ?? site.name).then((url) => {
+        if (url) setHeroImage(url)
+      })
+    }
+  }, [site])
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen text-gray-400">
@@ -39,8 +57,6 @@ const SiteDetail = () => {
       </div>
     )
   }
-
-  const site = sites.find((s) => s.id === Number(id))
 
   if (!site) {
     return (
@@ -59,9 +75,9 @@ const SiteDetail = () => {
     <div className="min-h-screen bg-gray-50 pt-14">
       {/* ヒーロー */}
       <div className="relative h-72 md:h-96 bg-gray-800 overflow-hidden">
-        {site.image_url && (
+        {heroImage && (
           <img
-            src={site.image_url}
+            src={heroImage}
             alt={site.name_ja}
             className="w-full h-full object-cover"
           />
