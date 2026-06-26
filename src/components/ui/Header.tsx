@@ -1,8 +1,8 @@
 /**
  * Header.tsx
  * 全ページ共通の上部ナビゲーションバー
- * トップのヒーロー上では透明、スクロールすると半透明の白に切り替わる
- * 現在地のタブをハイライトする
+ * PCではタブを横並び、スマホではハンバーガーメニューで開閉する
+ * トップのヒーロー上では透明、スクロールで半透明の白に切り替わる
  */
 import { useState, useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
@@ -13,22 +13,30 @@ import { auth } from '../../lib/firebase'
 
 const Header = () => {
   const { pathname } = useLocation()
-  const { user } = useAuth()
   const [scrolled, setScrolled] = useState(false)
-  const HEADER_DELAY = 3.2  // トップでヘッダーが現れるまでの待ち時間（秒）
+  const [menuOpen, setMenuOpen] = useState(false)
+  const { user } = useAuth()
+  const HEADER_DELAY = 2.5
 
-  // トップページかどうか（ヒーローがあるページ）
   const isHome = pathname === '/'
 
-  // スクロール位置を監視する
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50)
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // 背景を透明にするか（トップの最上部だけ透明）
-  const transparent = isHome && !scrolled
+  // ページが変わったらメニューを閉じる
+  useEffect(() => {
+    setMenuOpen(false)
+  }, [pathname])
+
+  const transparent = isHome && !scrolled && !menuOpen
+
+  const handleLogout = async () => {
+    await signOut(auth)
+    setMenuOpen(false)
+  }
 
   const tabs = [
     { path: '/', label: 'Home' },
@@ -37,9 +45,13 @@ const Header = () => {
     { path: '/wishlist', label: 'Wishlist' },
   ]
 
-  const handleLogout = async () => {
-    await signOut(auth)
-  }
+  // タブのリンク色（PC/スマホ共通のロジック）
+  const tabClass = (active: boolean) =>
+    `text-sm transition-colors ${
+      transparent
+        ? active ? 'text-white font-medium' : 'text-white/70 hover:text-white'
+        : active ? 'text-gray-900 font-medium' : 'text-gray-400 hover:text-gray-600'
+    }`
 
   return (
     <motion.header
@@ -63,49 +75,53 @@ const Header = () => {
           WORLD HERITAGE
         </Link>
 
-        {/* タブ */}
-        <nav className="flex gap-6">
-          {tabs.map((tab) => {
-            const active = pathname === tab.path
-            return (
-              <Link
-                key={tab.path}
-                to={tab.path}
-                className={`text-sm transition-colors ${
-                  transparent
-                    ? active
-                      ? 'text-white font-medium'
-                      : 'text-white/70 hover:text-white'
-                    : active
-                      ? 'text-gray-900 font-medium'
-                      : 'text-gray-400 hover:text-gray-600'
-                }`}
-              >
-                {tab.label}
-              </Link>
-            )
-          })}
+        {/* PC用タブ（md以上で表示） */}
+        <nav className="hidden md:flex gap-6 items-center">
+          {tabs.map((tab) => (
+            <Link key={tab.path} to={tab.path} className={tabClass(pathname === tab.path)}>
+              {tab.label}
+            </Link>
+          ))}
           {user ? (
-            <button
-              onClick={handleLogout}
-              className={`text-sm transition-colors ${
-                transparent ? 'text-white/70 hover:text-white' : 'text-gray-400 hover:text-gray-600'
-              }`}
+            <button onClick={handleLogout} className={tabClass(false)}>Logout</button>
+          ) : (
+            <Link to="/login" className={tabClass(false)}>Login</Link>
+          )}
+        </nav>
+
+        {/* スマホ用ハンバーガーボタン（md未満で表示） */}
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className={`md:hidden text-2xl ${transparent ? 'text-white' : 'text-gray-800'}`}
+          aria-label="メニュー"
+        >
+          {menuOpen ? '✕' : '☰'}
+        </button>
+      </div>
+
+      {/* スマホ用メニュー（開いたとき表示） */}
+      {menuOpen && (
+        <nav className="md:hidden bg-white border-t border-gray-100 px-6 py-4 flex flex-col gap-4">
+          {tabs.map((tab) => (
+            <Link
+              key={tab.path}
+              to={tab.path}
+              className={`text-sm ${pathname === tab.path ? 'text-gray-900 font-medium' : 'text-gray-500'}`}
             >
+              {tab.label}
+            </Link>
+          ))}
+          {user ? (
+            <button onClick={handleLogout} className="text-sm text-gray-500 text-left">
               Logout
             </button>
           ) : (
-            <Link
-              to="/login"
-              className={`text-sm transition-colors ${
-                transparent ? 'text-white/70 hover:text-white' : 'text-gray-400 hover:text-gray-600'
-              }`}
-            >
+            <Link to="/login" className="text-sm text-gray-500">
               Login
             </Link>
           )}
         </nav>
-      </div>
+      )}
     </motion.header>
   )
 }
