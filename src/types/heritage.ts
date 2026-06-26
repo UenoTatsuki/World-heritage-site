@@ -10,6 +10,7 @@ export interface HeritageItem {
   wiki_title?: string
   description: string
   short_description: string
+  justification: string
   latitude: number
   longitude: number
   category: 'Cultural' | 'Natural' | 'Mixed'

@@ -26,6 +26,7 @@ export const useHeritage = () => {
           name: item.site,
           name_ja: item.site_ja ?? item.site,
           wiki_title: item.wiki_title,
+          justification: item.justification ?? '',
           description: item.justification ?? '',
           short_description: item.short_description ?? '',
           latitude: parseFloat(item.latitude),

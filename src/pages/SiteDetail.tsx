@@ -1,10 +1,11 @@
 /**
  * SiteDetail.tsx
- * 世界遺産1件分の詳細を表示するページ
- * URLパラメータのidを使って該当する遺産データを探し出す
+ * 世界遺産1件分の詳細ページ
+ * ヒーロー画像・メタ情報・登録基準・概要文を表示する
  */
 import { useParams, useNavigate } from 'react-router-dom'
 import { useHeritage } from '../hooks/useHeritage'
+import { parseCriteria } from '../utils/criteria'
 
 const categoryLabel = (category: string) => {
   switch (category) {
@@ -15,6 +16,17 @@ const categoryLabel = (category: string) => {
   }
 }
 
+const regionLabel = (region: string) => {
+  switch (region) {
+    case 'Africa': return 'アフリカ'
+    case 'Arab States': return 'アラブ諸国'
+    case 'Asia and the Pacific': return 'アジア・太平洋'
+    case 'Europe and North America': return 'ヨーロッパ・北米'
+    case 'Latin America and the Caribbean': return 'ラテンアメリカ・カリブ'
+    default: return region
+  }
+}
+
 const SiteDetail = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -22,7 +34,7 @@ const SiteDetail = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen text-gray-400">
+      <div className="flex items-center justify-center min-h-screen text-gray-400">
         読み込み中...
       </div>
     )
@@ -32,62 +44,82 @@ const SiteDetail = () => {
 
   if (!site) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen gap-4">
+      <div className="flex flex-col items-center justify-center min-h-screen gap-4">
         <p className="text-gray-500">該当する遺産が見つかりませんでした</p>
-        <button
-          onClick={() => navigate('/')}
-          className="text-blue-500 underline text-sm"
-        >
+        <button onClick={() => navigate('/')} className="text-blue-500 underline text-sm">
           トップに戻る
         </button>
       </div>
     )
   }
 
+  const criteria = parseCriteria(site.justification)
+
   return (
     <div className="min-h-screen bg-gray-50 pt-14">
+      {/* ヒーロー */}
+      <div className="relative h-72 md:h-96 bg-gray-800 overflow-hidden">
+        {site.image_url && (
+          <img
+            src={site.image_url}
+            alt={site.name_ja}
+            className="w-full h-full object-cover"
+          />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/10" />
+        <div className="absolute inset-0 max-w-3xl mx-auto px-6 flex flex-col justify-end pb-8">
+          <button
+            onClick={() => navigate(-1)}
+            className="absolute top-4 left-6 text-white/80 hover:text-white text-sm"
+          >
+            ← 戻る
+          </button>
+          <span className="self-start text-xs font-medium px-3 py-1 rounded-full bg-white/90 text-gray-800 mb-3">
+            {categoryLabel(site.category)}
+          </span>
+          <h1 className="text-white text-3xl md:text-4xl font-bold">
+            {site.name_ja}
+          </h1>
+          {site.name_ja !== site.name && (
+            <p className="text-white/70 text-sm mt-2">{site.name}</p>
+          )}
+        </div>
+      </div>
 
-      {/* ヘッダー */}
-      <header className="bg-white shadow-sm px-6 py-4 flex items-center gap-4">
-        <button
-          onClick={() => navigate(-1)}
-          className="text-gray-400 hover:text-gray-600 text-sm"
-        >
-          ← 戻る
-        </button>
-        <h1 className="text-lg font-bold text-gray-800">遺産の詳細</h1>
-      </header>
-
-      {/* コンテンツ */}
-      <div className="max-w-2xl mx-auto p-6">
-        <span className="text-xs font-medium px-3 py-1 rounded-full bg-blue-100 text-blue-700">
-          {categoryLabel(site.category)}
-        </span>
-
-        <h2 className="text-2xl font-bold text-gray-800 mt-3">
-          {site.name_ja}
-        </h2>
-
-        <div className="flex gap-4 mt-2 text-sm text-gray-400">
-          <span>{site.country}</span>
+      {/* 本文 */}
+      <div className="max-w-3xl mx-auto px-6 py-8">
+        {/* メタ情報 */}
+        <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-500 pb-5 border-b border-gray-100 mb-6">
+          <span className="text-gray-800 font-medium">{site.country}</span>
           <span>{site.date_inscribed}年登録</span>
-          <span>{site.region}</span>
+          <span>{regionLabel(site.region)}</span>
         </div>
 
-        <div className="mt-6 bg-white rounded-xl shadow-sm p-6">
-          <h3 className="text-sm font-bold text-gray-700 mb-2">概要</h3>
-          <p className="text-sm text-gray-600 leading-relaxed">
-            {site.short_description || '説明文がまだ登録されていません。'}
-          </p>
+        {/* 登録基準 */}
+        {criteria.length > 0 && (
+          <div className="mb-8">
+            <h2 className="text-xs tracking-wider text-gray-400 uppercase mb-3">登録基準</h2>
+            <div className="flex flex-col gap-3">
+              {criteria.map((c) => (
+                <div key={c.code} className="flex gap-3 items-start">
+                  <span className="flex-shrink-0 w-7 h-7 rounded-full bg-blue-50 text-blue-600 text-xs flex items-center justify-center font-medium">
+                    {c.code}
+                  </span>
+                  <span className="text-sm text-gray-700 leading-relaxed pt-1">
+                    {c.text}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
-          {site.description && (
-            <>
-              <h3 className="text-sm font-bold text-gray-700 mt-6 mb-2">登録基準・詳細</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                {site.description}
-              </p>
-            </>
-          )}
+        {/* 概要文 */}
+        <div>
+          <h2 className="text-xs tracking-wider text-gray-400 uppercase mb-3">概要</h2>
+          <p className="text-sm text-gray-600 leading-loose">
+            {site.short_description || 'この遺産の概要はまだ登録されていません。'}
+          </p>
         </div>
       </div>
     </div>

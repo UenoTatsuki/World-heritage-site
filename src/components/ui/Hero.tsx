@@ -73,7 +73,7 @@ const Hero = () => {
           transition={{ duration: FADE_DURATION, delay: SUB_DELAY }}
           className="text-white/80 text-xs sm:text-base md:text-lg mt-6"
         >
-          1,199件の世界遺産を地域・分類から探せるアーカイブ
+          1,248件の世界遺産を地域・分類から探せるアーカイブ
         </motion.p>
       </div>
 
