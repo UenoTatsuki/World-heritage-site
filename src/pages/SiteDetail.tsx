@@ -9,6 +9,7 @@ import { parseCriteria } from '../utils/criteria'
 import { useState, useEffect } from 'react'
 import { fetchWikipediaImage } from '../utils/wikipediaImage'
 import { motion } from 'framer-motion'
+import MiniMap from '../components/map/MiniMap'
 
 const categoryLabel = (category: string) => {
   switch (category) {
@@ -146,13 +147,54 @@ const SiteDetail = () => {
           </div>
         )}
 
-        {/* 概要文 */}
-        <div>
-          <h2 className="text-xs tracking-wider text-gray-400 uppercase mb-3">概要</h2>
+        {/* 概要 */}
+        <motion.section
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6 }}
+          className="mb-10"
+        >
+          <h2 className="text-xl font-bold text-gray-800 mb-4">概要</h2>
           <p className="text-sm text-gray-600 leading-loose">
             {site.short_description || 'この遺産の概要はまだ登録されていません。'}
           </p>
-        </div>
+        </motion.section>
+
+        {/* 魅力 */}
+        <motion.section
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6 }}
+          className="mb-10"
+        >
+          <h2 className="text-xl font-bold text-gray-800 mb-4">魅力</h2>
+          <p className="text-sm text-gray-600 leading-loose">
+            {site.appeal || 'この遺産の魅力はまだ登録されていません。'}
+          </p>
+        </motion.section>
+
+        {/* 場所 */}
+        <motion.section
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6 }}
+          className="mb-10"
+        >
+          <h2 className="text-xl font-bold text-gray-800 mb-4">場所</h2>
+          {site.latitude && site.longitude &&
+           !isNaN(Number(site.latitude)) && !isNaN(Number(site.longitude)) ? (
+            <MiniMap
+              lat={Number(site.latitude)}
+              lng={Number(site.longitude)}
+              name={site.name_ja}
+            />
+          ) : (
+            <p className="text-sm text-gray-400">位置情報が登録されていません。</p>
+          )}
+        </motion.section>
       </motion.div>
     </div>
   )

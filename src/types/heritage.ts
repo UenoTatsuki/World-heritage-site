@@ -10,6 +10,7 @@ export interface HeritageItem {
   wiki_title?: string
   description: string
   short_description: string
+  appeal: string
   justification: string
   latitude: number
   longitude: number

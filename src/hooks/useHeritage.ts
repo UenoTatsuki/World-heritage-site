@@ -29,6 +29,7 @@ export const useHeritage = () => {
           justification: item.justification ?? '',
           description: item.justification ?? '',
           short_description: item.short_description ?? '',
+          appeal: item.appeal ?? '',
           latitude: parseFloat(item.latitude),
           longitude: parseFloat(item.longitude),
           category: item.category === 'C' ? 'Cultural'
