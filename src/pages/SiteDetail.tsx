@@ -8,6 +8,7 @@ import { useHeritage } from '../hooks/useHeritage'
 import { parseCriteria } from '../utils/criteria'
 import { useState, useEffect } from 'react'
 import { fetchWikipediaImage } from '../utils/wikipediaImage'
+import { motion } from 'framer-motion'
 
 const categoryLabel = (category: string) => {
   switch (category) {
@@ -76,9 +77,12 @@ const SiteDetail = () => {
       {/* ヒーロー */}
       <div className="relative h-72 md:h-96 bg-gray-800 overflow-hidden">
         {heroImage && (
-          <img
+          <motion.img
             src={heroImage}
             alt={site.name_ja}
+            initial={{ scale: 1.1, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 1.2, ease: 'easeOut' }}
             className="w-full h-full object-cover"
           />
         )}
@@ -90,20 +94,32 @@ const SiteDetail = () => {
           >
             ← 戻る
           </button>
-          <span className="self-start text-xs font-medium px-3 py-1 rounded-full bg-white/90 text-gray-800 mb-3">
-            {categoryLabel(site.category)}
-          </span>
-          <h1 className="text-white text-3xl md:text-4xl font-bold">
-            {site.name_ja}
-          </h1>
-          {site.name_ja !== site.name && (
-            <p className="text-white/70 text-sm mt-2">{site.name}</p>
-          )}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="flex flex-col"
+          >
+            <span className="self-start text-xs font-medium px-3 py-1 rounded-full bg-white/90 text-gray-800 mb-3">
+              {categoryLabel(site.category)}
+            </span>
+            <h1 className="text-white text-3xl md:text-4xl font-bold">
+              {site.name_ja}
+            </h1>
+            {site.name_ja !== site.name && (
+              <p className="text-white/70 text-sm mt-2">{site.name}</p>
+            )}
+          </motion.div>
         </div>
       </div>
 
       {/* 本文 */}
-      <div className="max-w-3xl mx-auto px-6 py-8">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.6 }}
+        className="max-w-3xl mx-auto px-6 py-8"
+      >
         {/* メタ情報 */}
         <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-500 pb-5 border-b border-gray-100 mb-6">
           <span className="text-gray-800 font-medium">{site.country}</span>
@@ -137,7 +153,7 @@ const SiteDetail = () => {
             {site.short_description || 'この遺産の概要はまだ登録されていません。'}
           </p>
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }
