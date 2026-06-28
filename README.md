@@ -46,6 +46,16 @@
 
 世界遺産のデータ（名称・座標・登録年・画像）は [Wikidata](https://www.wikidata.org/) から取得しています。Wikidataのデータはクリエイティブ・コモンズ CC0（パブリックドメイン）で提供されており、自由に利用・改変・再配布が可能です。画像は Wikimedia Commons のものを使用しています。
 
+### 画像・データのクレジット
+
+本サイトで使用している画像は、主に [Wikimedia Commons](https://commons.wikimedia.org/) および各権利者に帰属します。各画像のライセンス（CC0、CC BY、CC BY-SA など）は、Wikimedia Commons の各ファイルページに記載されています。利用にあたっては各ライセンスの条件に従っています。
+
+世界遺産のデータ（名称・座標・登録年・分類など）は、[Wikidata](https://www.wikidata.org/)（CC0 / パブリックドメイン）および [UNESCO World Heritage Centre](https://whc.unesco.org/) の公開データを参照しています。
+
+個別に選定して使用している画像については、可能な範囲で出典を明記します。
+
+- 平泉（中尊寺）: Wikimedia Commons（CC BY-SA 4.0）
+
 ---
 
 ## こだわった点・工夫

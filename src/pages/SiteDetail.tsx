@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react'
 import { fetchWikipediaImage } from '../utils/wikipediaImage'
 import { motion } from 'framer-motion'
 import MiniMap from '../components/map/MiniMap'
+import ReactMarkdown from 'react-markdown'
 
 const categoryLabel = (category: string) => {
   switch (category) {
@@ -156,9 +157,11 @@ const SiteDetail = () => {
           className="mb-10"
         >
           <h2 className="text-xl font-bold text-gray-800 mb-4">概要</h2>
-          <p className="text-sm text-gray-600 leading-loose">
-            {site.short_description || 'この遺産の概要はまだ登録されていません。'}
-          </p>
+          <div className="text-sm text-gray-600 leading-loose text-justify">
+            <ReactMarkdown>
+              {site.short_description || 'この遺産の概要はまだ登録されていません。'}
+            </ReactMarkdown>
+          </div>
         </motion.section>
 
         {/* 魅力 */}
@@ -170,9 +173,11 @@ const SiteDetail = () => {
           className="mb-10"
         >
           <h2 className="text-xl font-bold text-gray-800 mb-4">魅力</h2>
-          <p className="text-sm text-gray-600 leading-loose">
-            {site.appeal || 'この遺産の魅力はまだ登録されていません。'}
-          </p>
+          <div className="text-sm text-gray-600 leading-loose text-justify">
+            <ReactMarkdown>
+              {site.appeal || 'この遺産の魅力はまだ登録されていません。'}
+            </ReactMarkdown>
+          </div>
         </motion.section>
 
         {/* 場所 */}

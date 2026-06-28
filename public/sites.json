@@ -2915,16 +2915,17 @@
     {
       "id_no": 209,
       "site": "Hiraizumi ? Temples, Gardens and Archaeological Sites Representing the Buddhist Pure Land",
-      "site_ja": "Hiraizumi ? Temples, Gardens and Archaeological Sites Representing the Buddhist Pure Land",
-      "justification": "(ii)",
-      "short_description": "",
-      "latitude": "",
-      "longitude": "",
+      "site_ja": "平泉ー仏国土(浄土)を表す建築・庭園及び考古学的遺跡群",
+      "justification": "(ii)(vi)",
+      "short_description": "8〜12世紀の日本で広まった浄土思想に基づき、奥州藤原氏3代が仏国土（浄土）を現実に表現しようとした景観。中尊寺・毛越寺など5つの構成資産からなり、それぞれが浄土を表す庭園を備えている。京都に並ぶ最先端都市として栄えた、奥州藤原氏の平和都市の姿を今に伝えている。",
+      "appeal":"浄土思想の考え方に基づいて造られた理想世界が、一群として良好に保存されている点でしょう。なかでも中尊寺金色堂は、マルコポーロが日本を「黄金の国ジパング」と名付けるきっかけとなった説があります。諸説ありですが、当時奥州では大量の金が産出されており、これが奥州藤原氏の財源を支えていたといわれています。この背景を考えると、金色堂が「黄金の国ジパング」のモデルになったという話はあながち間違いではないのかもしれません。",
+      "latitude": "39.0011",
+      "longitude": "141.1078",
       "category": "C",
       "region": "Asia and the Pacific",
       "states": "Japan",
       "date_inscribed": 2011,
-      "image_url": ""
+      "image_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/230728_Chusonji_Hiraizumi_Iwate_pref_Japan01s3.jpg/960px-230728_Chusonji_Hiraizumi_Iwate_pref_Japan01s3.jpg?width=800"
     },
     {
       "id_no": 210,
