@@ -11,6 +11,9 @@ export interface HeritageItem {
   description: string
   short_description: string
   appeal: string
+  components: number
+  catchphrase: string
+  gallery: string[]
   justification: string
   latitude: number
   longitude: number

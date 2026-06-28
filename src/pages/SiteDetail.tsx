@@ -21,17 +21,6 @@ const categoryLabel = (category: string) => {
   }
 }
 
-const regionLabel = (region: string) => {
-  switch (region) {
-    case 'Africa': return 'アフリカ'
-    case 'Arab States': return 'アラブ諸国'
-    case 'Asia and the Pacific': return 'アジア・太平洋'
-    case 'Europe and North America': return 'ヨーロッパ・北米'
-    case 'Latin America and the Caribbean': return 'ラテンアメリカ・カリブ'
-    default: return region
-  }
-}
-
 const SiteDetail = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
@@ -122,12 +111,32 @@ const SiteDetail = () => {
         transition={{ duration: 0.6, delay: 0.6 }}
         className="max-w-3xl mx-auto px-6 py-8"
       >
-        {/* メタ情報 */}
-        <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-gray-500 pb-5 border-b border-gray-100 mb-6">
-          <span className="text-gray-800 font-medium">{site.country}</span>
-          <span>{site.date_inscribed}年登録</span>
-          <span>{regionLabel(site.region)}</span>
+
+        {/* 数字カード */}
+        <div className="grid grid-cols-3 gap-3 mb-8">
+          <div className="bg-gray-50 rounded-xl py-4 text-center">
+            <p className="text-lg font-bold text-gray-800">{site.date_inscribed}</p>
+            <p className="text-xs text-gray-400 mt-1">登録年</p>
+          </div>
+          <div className="bg-gray-50 rounded-xl py-4 text-center">
+            <p className="text-lg font-bold text-gray-800">{site.country}</p>
+            <p className="text-xs text-gray-400 mt-1">所在国</p>
+          </div>
+          {site.components > 0 && (
+            <div className="bg-gray-50 rounded-xl py-4 text-center">
+              <p className="text-lg font-bold text-gray-800">{site.components}</p>
+              <p className="text-xs text-gray-400 mt-1">構成資産</p>
+            </div>
+          )}
         </div>
+
+        {/* キャッチコピー */}
+        {site.catchphrase && (
+          <p className="text-lg md:text-xl text-gray-700 leading-relaxed border-l-4 border-gray-200 pl-4 mb-8"
+             style={{ fontFamily: 'serif' }}>
+            {site.catchphrase}
+          </p>
+        )}
 
         {/* 登録基準 */}
         {criteria.length > 0 && (
@@ -179,6 +188,30 @@ const SiteDetail = () => {
             </ReactMarkdown>
           </div>
         </motion.section>
+
+        {/* 見どころギャラリー */}
+        {site.gallery && site.gallery.length > 0 && (
+          <motion.section
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: '-80px' }}
+            transition={{ duration: 0.6 }}
+            className="mb-10"
+          >
+            <h2 className="text-xl font-bold text-gray-800 mb-4">見どころ</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+              {site.gallery.map((url, index) => (
+                <img
+                  key={index}
+                  src={url}
+                  alt={`${site.name_ja} ${index + 1}`}
+                  loading="lazy"
+                  className="w-full aspect-square object-cover rounded-xl"
+                />
+              ))}
+            </div>
+          </motion.section>
+        )}
 
         {/* 場所 */}
         <motion.section
